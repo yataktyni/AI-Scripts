@@ -147,9 +147,10 @@ function renderScripts() {
 
         // Create a download link and add it after the title
         const downloadLink = document.createElement('a');
+        downloadBtn.classList.add('download-btn');
         downloadLink.href = '#';
         downloadLink.title = 'Download Script';
-        downloadLink.textContent = ' ⏬ Download Script';
+        downloadLink.textContent = '⏬';
         downloadLink.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent the default link behavior
             downloadScript(`${rawURL}${script.file}`, script.file);
