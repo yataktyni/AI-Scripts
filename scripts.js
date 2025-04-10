@@ -11,135 +11,113 @@ const categoryIcons = {
     MISC: '📁'
 };
 
+let allScripts = [];
+let currentFilter = null;
+let currentSearch = '';
+
 document.addEventListener('DOMContentLoaded', () => {
-    initMode();
     fetchScripts();
-    setupSearch();
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        currentSearch = e.target.value.toLowerCase();
+        renderScripts();
+    });
+
+    document.getElementById('mode-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.getElementById('mode-toggle');
+        btn.textContent = document.body.classList.contains('dark-mode') ? 'Light ☀️ mode' : 'Dark 🌙 mode';
+    });
 });
 
-function initMode() {
-    const body = document.body;
-    const modeToggle = document.getElementById('mode-toggle');
-
-    const savedMode = localStorage.getItem('mode') || 'dark';
-    if (savedMode === 'dark') {
-        body.classList.add('dark-mode');
-        modeToggle.textContent = 'Light 🌞 mode';
-    } else {
-        modeToggle.textContent = 'Dark 🌙 mode';
-    }
-
-    modeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        const newMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
-        localStorage.setItem('mode', newMode);
-        modeToggle.textContent = newMode === 'dark' ? 'Light 🌞 mode' : 'Dark 🌙 mode';
-    });
-}
-
 async function fetchScripts() {
-    const response = await fetch(repoAPI);
-    const data = await response.json();
+    try {
+        const response = await fetch(repoAPI);
+        const data = await response.json();
 
-    const scriptsContainer = document.getElementById('scripts-container');
-    const filterContainer = document.getElementById('filter-container');
-    const categorizedScripts = categorizeScripts(data);
+        const scripts = data.filter(item => item.name.endsWith('.bat') || item.name.endsWith('.ps1'));
+        allScripts = scripts.map(script => {
+            const name = script.name.replace(/\.(bat|ps1)$/, '');
+            const categoryMatch = name.match(/^\[(.*?)\]/);
+            const category = categoryMatch ? categoryMatch[1] : 'MISC';
+            return {
+                name: name,
+                file: script.name,
+                category: category.toUpperCase()
+            };
+        });
 
-    createCategoryFilters(filterContainer, categorizedScripts);
-    displayScripts(scriptsContainer, categorizedScripts);
+        renderFilterButtons();
+        renderScripts();
+    } catch (error) {
+        console.error('Error fetching scripts:', error);
+    }
 }
 
-function categorizeScripts(files) {
-    const categorized = {
-        WSL: [],
-        DEV: [],
-        NET: [],
-        WIN: [],
-        GAMING: [],
-        SYS: [],
-        MISC: []
-    };
+function renderFilterButtons() {
+    const container = document.getElementById('filter-container');
+    const categories = [...new Set(allScripts.map(s => s.category))];
 
-    files.forEach(file => {
-        if (file.name.match(/\.(bat|ps1|sh)$/)) {
-            const category = getCategory(file.name);
-            categorized[category].push(file);
-        }
+    const allBtn = document.createElement('button');
+    allBtn.textContent = 'Show All';
+    allBtn.className = 'filter-btn';
+    allBtn.classList.add('active');
+    allBtn.addEventListener('click', () => {
+        currentFilter = null;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        allBtn.classList.add('active');
+        renderScripts();
     });
+    container.appendChild(allBtn);
 
-    return categorized;
-}
-
-function getCategory(fileName) {
-    if (fileName.includes('wsl')) return 'WSL';
-    if (fileName.includes('dev')) return 'DEV';
-    if (fileName.includes('net')) return 'NET';
-    if (fileName.includes('win')) return 'WIN';
-    if (fileName.includes('gaming')) return 'GAMING';
-    if (fileName.includes('sys')) return 'SYS';
-    return 'MISC';
-}
-
-function createCategoryFilters(filterContainer, categorizedScripts) {
-    const categories = Object.keys(categorizedScripts);
-
-    categories.forEach(category => {
-        const filterButton = document.createElement('button');
-        filterButton.textContent = `${categoryIcons[category]} ${category}`;
-        filterButton.classList.add('filter-btn');
-        filterButton.addEventListener('click', () => filterScripts(category));
-        filterContainer.appendChild(filterButton);
+    categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.textContent = `${categoryIcons[cat] || ''} ${cat}`;
+        btn.className = 'filter-btn';
+        btn.addEventListener('click', () => {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btn.classList.add('active');
+            renderScripts();
+        });
+        container.appendChild(btn);
     });
 }
 
-function displayScripts(container, categorizedScripts) {
+function renderScripts() {
+    const container = document.getElementById('scripts-container');
+    const noResults = document.getElementById('no-results');
     container.innerHTML = '';
 
-    const scripts = Object.values(categorizedScripts).flat();
-    scripts.forEach(file => {
-        const scriptItem = document.createElement('div');
-        scriptItem.classList.add('script-item');
-        scriptItem.innerHTML = `
-            <h3>${file.name}</h3>
-            <p id="description-${file.name}">Loading description...</p>
-            <button onclick="downloadScript('${file.download_url}')">Download</button>
-        `;
-        container.appendChild(scriptItem);
-
-        // Fetch description asynchronously and update
-        getDescription(file.path).then(description => {
-            document.getElementById(`description-${file.name}`).innerText = description;
-        });
+    const filtered = allScripts.filter(script => {
+        const matchesCategory = currentFilter ? script.category === currentFilter : true;
+        const matchesSearch = script.name.toLowerCase().includes(currentSearch);
+        return matchesCategory && matchesSearch;
     });
-}
 
-function filterScripts(category) {
-    const categorizedScripts = document.getElementById('scripts-container').children;
-    for (let script of categorizedScripts) {
-        const scriptCategory = script.querySelector('h3').textContent.split('_')[0]; // Assuming first part is the category
-        script.style.display = scriptCategory === category || category === 'All' ? 'block' : 'none';
+    if (filtered.length === 0) {
+        noResults.style.display = 'block';
+        return;
+    } else {
+        noResults.style.display = 'none';
     }
-}
 
-function downloadScript(url) {
-    window.open(url, '_blank');
-}
+    filtered.forEach(script => {
+        const scriptDiv = document.createElement('div');
+        scriptDiv.className = 'script-item';
 
-async function getDescription(filePath) {
-    const rawFile = await fetch(`${rawURL}${filePath}`);
-    const content = await rawFile.text();
-    const descriptionMatch = content.match(/^::\s*Description:\s*(.+)$/mi);
-    return descriptionMatch ? descriptionMatch[1].trim() : "No description found.";
-}
+        const title = document.createElement('h3');
+        title.textContent = `${categoryIcons[script.category] || ''} ${script.name}`;
+        scriptDiv.appendChild(title);
 
-function setupSearch() {
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', () => {
-        const filter = searchInput.value.toLowerCase();
-        const allScripts = document.querySelectorAll('.script-item');
-        allScripts.forEach(script => {
-            const scriptText = script.textContent.toLowerCase();
-            script.style.display = scriptText.includes(filter) ? 'block' : 'none';
-        });
+        const viewBtn = document.createElement('a');
+        viewBtn.href = `${rawURL}${script.file}`;
+        viewBtn.textContent = '🔗 View Script';
+        viewBtn.target = '_blank';
+        viewBtn.style.display = 'inline-block';
+        viewBtn.style.marginTop = '10px';
+        scriptDiv.appendChild(viewBtn);
+
+        container.appendChild(scriptDiv);
     });
 }
