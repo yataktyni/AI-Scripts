@@ -1,107 +1,97 @@
-/* Old Money Color Palette */
-:root {
-    --cream: #f5f5dc;
-    --taupe: #d2b48c;
-    --beige: #f5f5dc;
-    --deep-green: #355e3b;
-    --burgundy: #800020;
-    --dark-gray: #333;
-    --light-gray: #ccc;
-    --white: #fff;
-}
-
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: var(--cream);
-    color: var(--dark-gray);
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
     text-align: center;
-    transition: background-color 0.3s, color 0.3s;
+    padding: 20px;
 }
 
-.dark-mode {
-    background-color: var(--dark-gray);
-    color: var(--white);
+body.dark-mode {
+    background-color: #2c2c2c;
+    color: #ddd;
 }
 
-header, .intro, footer {
-    background-color: var(--taupe);
-    color: var(--white);
+header, footer {
     padding: 20px;
     margin-bottom: 20px;
-    border-radius: 10px;
+    background-color: #f1e6b9; /* old money rich color */
 }
 
-.header-container h1 {
-    font-size: 2.5em;
-    margin: 0;
+header h1 {
+    color: #4a4a4a;
 }
 
-#mode-toggle {
-    background: var(--deep-green);
-    color: var(--white);
+header p, footer p {
+    margin: 10px 0;
+}
+
+button {
+    background-color: #4a4a4a;
+    color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
-    font-size: 1em;
-    margin-top: 10px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+.intro {
+    margin: 30px 0;
 }
 
 #top-controls {
     margin: 20px 0;
 }
 
-#search-input {
-    width: 80%;
-    max-width: 600px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 2px solid var(--light-gray);
-    font-size: 1.1em;
-}
-
 #filter-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .filter-btn {
-    background-color: var(--deep-green);
-    color: var(--white);
-    padding: 10px 20px;
     margin: 5px;
-    border-radius: 5px;
+    padding: 10px;
     border: none;
+    background-color: #ddd;
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s;
 }
 
-.filter-btn.active, .filter-btn:hover {
-    background-color: var(--burgundy);
+.filter-btn.active {
+    background-color: #b4a8a1; /* rich old money color */
 }
 
 #scripts-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    margin-top: 20px;
 }
 
 .script-item {
-    background-color: var(--beige);
-    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-    text-align: left;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.script-item:hover {
-    transform: scale(1.05
-::contentReference[oaicite:21]{index=21}
- 
+script-item h3 {
+    font-size: 1.2em;
+    color: #333;
+}
+
+script-item p {
+    font-size: 1em;
+    color: #666;
+}
+
+a {
+    text-decoration: none;
+    color: #2a7f64;
+}
+
+a:hover {
+    text-decoration: underline;
+}
