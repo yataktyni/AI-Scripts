@@ -3,7 +3,7 @@ SETLOCAL
 
 :: ===========================================
 :: Script Name: wsl_stop.bat
-:: Description: This script stops your WSL2 Ubuntu instance, and for related service to disabled state to prevent it from autorun without calling it again.
+:: Description: This script stops your WSL2 Ubuntu instance and sets the related service to disabled state for preventing it from autorun without manually calling it again.
 :: Author: yataktyni (https://x.com/yataktyni)
 :: License: MIT License
 :: Copyright: (c) 2025 yataktyni. All Rights Reserved.
