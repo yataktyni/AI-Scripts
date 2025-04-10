@@ -116,4 +116,17 @@ footer a:hover {
     margin-top: 20px;
     font-size: 1.2em;
     color: #4a9a6f;
+    text-decoration: underline;
+}
+
+#donate-btn:hover {
+    color: #8f7b51;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
