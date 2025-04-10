@@ -1,9 +1,20 @@
 const repoAPI = 'https://api.github.com/repos/yataktyni/AI-Scripts/contents';
 const rawURL = 'https://raw.githubusercontent.com/yataktyni/AI-Scripts/main/';
 
+const categoryIcons = {
+    WSL: '🐧',
+    DEV: '💻',
+    NET: '🌐',
+    WIN: '🪟',
+    GAMING: '🎮',
+    SYS: '🖥️',
+    MISC: '📁'
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initMode();
     fetchScripts();
+    setupSearch();
 });
 
 function initMode() {
@@ -18,117 +29,112 @@ function initMode() {
         modeToggle.textContent = 'Dark 🌙 mode';
     }
 
-    modeToggle.addEventListener('click', toggleMode);
-}
-
-function toggleMode() {
-    const body = document.body;
-    const modeToggle = document.getElementById('mode-toggle');
-
-    body.classList.toggle('dark-mode');
-    const newMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
-    localStorage.setItem('mode', newMode);
-    modeToggle.textContent = newMode === 'dark' ? 'Light 🌞 mode' : 'Dark 🌙 mode';
+    modeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const newMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('mode', newMode);
+        modeToggle.textContent = newMode === 'dark' ? 'Light 🌞 mode' : 'Dark 🌙 mode';
+    });
 }
 
 async function fetchScripts() {
+    const response = await fetch(repoAPI);
+    const data = await response.json();
+
     const scriptsContainer = document.getElementById('scripts-container');
     const filterContainer = document.getElementById('filter-container');
+    const categorizedScripts = categorizeScripts(data);
 
-    const response = await fetch(repoAPI);
-    const files = await response.json();
+    createCategoryFilters(filterContainer, categorizedScripts);
+    displayScripts(scriptsContainer, categorizedScripts);
+}
 
-    const scriptGroups = {};
+function categorizeScripts(files) {
+    const categorized = {
+        WSL: [],
+        DEV: [],
+        NET: [],
+        WIN: [],
+        GAMING: [],
+        SYS: [],
+        MISC: []
+    };
 
-    for (const file of files) {
-        if (file.name.endsWith('.bat')) {
-            const prefix = file.name.includes('_') ? file.name.split('_')[0].toUpperCase() : 'MISC';
-            if (!scriptGroups[prefix]) {
-                scriptGroups[prefix] = [];
-            }
-
-            const description = await getDescription(file.name);
-
-            scriptGroups[prefix].push({
-                name: file.name,
-                description,
-                path: file.path,
-                downloadUrl: file.download_url
-            });
+    files.forEach(file => {
+        if (file.name.match(/\.(bat|ps1|sh)$/)) {
+            const category = getCategory(file.name);
+            categorized[category].push(file);
         }
+    });
+
+    return categorized;
+}
+
+function getCategory(fileName) {
+    if (fileName.includes('wsl')) return 'WSL';
+    if (fileName.includes('dev')) return 'DEV';
+    if (fileName.includes('net')) return 'NET';
+    if (fileName.includes('win')) return 'WIN';
+    if (fileName.includes('gaming')) return 'GAMING';
+    if (fileName.includes('sys')) return 'SYS';
+    return 'MISC';
+}
+
+function createCategoryFilters(filterContainer, categorizedScripts) {
+    const categories = Object.keys(categorizedScripts);
+
+    categories.forEach(category => {
+        const filterButton = document.createElement('button');
+        filterButton.textContent = `${categoryIcons[category]} ${category}`;
+        filterButton.classList.add('filter-btn');
+        filterButton.addEventListener('click', () => filterScripts(category));
+        filterContainer.appendChild(filterButton);
+    });
+}
+
+function displayScripts(container, categorizedScripts) {
+    container.innerHTML = '';
+
+    const scripts = Object.values(categorizedScripts).flat();
+    scripts.forEach(file => {
+        const scriptItem = document.createElement('div');
+        scriptItem.classList.add('script-item');
+        scriptItem.innerHTML = `
+            <h3>${file.name}</h3>
+            <p>${getDescription(file.path)}</p>
+            <button onclick="downloadScript('${file.download_url}')">Download</button>
+        `;
+        container.appendChild(scriptItem);
+    });
+}
+
+function filterScripts(category) {
+    const categorizedScripts = document.getElementById('scripts-container').children;
+    for (let script of categorizedScripts) {
+        const scriptCategory = script.querySelector('h3').textContent.split('_')[0]; // Assuming first part is the category
+        script.style.display = scriptCategory === category || category === 'All' ? 'block' : 'none';
     }
-
-    const allTags = Object.keys(scriptGroups).sort();
-
-    // Create filter buttons
-    const allBtn = createFilterButton('ALL', true);
-    filterContainer.appendChild(allBtn);
-
-    allTags.forEach(tag => {
-        const btn = createFilterButton(tag);
-        filterContainer.appendChild(btn);
-    });
-
-    // Display scripts
-    allTags.forEach(tag => {
-        const groupWrapper = document.createElement('div');
-        groupWrapper.className = 'script-group';
-        groupWrapper.dataset.group = tag;
-
-        const groupTitle = document.createElement('h3');
-        groupTitle.className = 'group-title';
-        groupTitle.textContent = tag;
-        groupWrapper.appendChild(groupTitle);
-
-        scriptGroups[tag].forEach(script => {
-            const scriptItem = document.createElement('div');
-            scriptItem.classList.add('script-item');
-            scriptItem.innerHTML = `
-                <h4>${script.name}</h4>
-                <p>${script.description}</p>
-                <a href="${script.downloadUrl}" class="download-btn" download>⬇ Download</a>
-            `;
-            groupWrapper.appendChild(scriptItem);
-        });
-
-        scriptsContainer.appendChild(groupWrapper);
-    });
-
-    // Filtering logic
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(btn =>
-        btn.addEventListener('click', () => {
-            const tag = btn.dataset.tag;
-
-            filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const groups = document.querySelectorAll('.script-group');
-            groups.forEach(group => {
-                if (tag === 'ALL' || group.dataset.group === tag) {
-                    group.classList.remove('hidden');
-                    group.classList.add('fade-in');
-                } else {
-                    group.classList.add('hidden');
-                    group.classList.remove('fade-in');
-                }
-            });
-        })
-    );
 }
 
-function createFilterButton(tag, isActive = false) {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    if (isActive) btn.classList.add('active');
-    btn.textContent = tag;
-    btn.dataset.tag = tag;
-    return btn;
+function downloadScript(url) {
+    window.open(url, '_blank');
 }
 
-async function getDescription(fileName) {
-    const rawFile = await fetch(`${rawURL}${fileName}`);
+async function getDescription(filePath) {
+    const rawFile = await fetch(`${rawURL}${filePath}`);
     const content = await rawFile.text();
     const descriptionMatch = content.match(/^::\s*Description:\s*(.+)$/mi);
     return descriptionMatch ? descriptionMatch[1].trim() : "No description found.";
+}
+
+function setupSearch() {
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+        const filter = searchInput.value.toLowerCase();
+        const allScripts = document.querySelectorAll('.script-item');
+        allScripts.forEach(script => {
+            const scriptText = script.textContent.toLowerCase();
+            script.style.display = scriptText.includes(filter) ? 'block' : 'none';
+        });
+    });
 }
