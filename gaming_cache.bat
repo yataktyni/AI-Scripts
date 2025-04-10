@@ -3,7 +3,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 :: ===========================================
 :: Script Name: gaming_cache.bat
-:: Description: This script cleans up and moves GPU cache folders for NVIDIA, AMD, and Intel GPUs to a new location.
+:: Description: This script cleans up and moves your GPU cache folders for NVIDIA, AMD, and Intel GPUs from system drive to a new defined location.
 :: Author: yataktyni (https://x.com/yataktyni)
 :: License: MIT License
 :: Copyright: (c) 2025 yataktyni. All Rights Reserved.
