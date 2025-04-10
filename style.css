@@ -27,6 +27,10 @@ p:not(:last-child) {
     margin-bottom: 10px;
 }
 
+h2 {
+    margin-bottom: 20px;
+}
+
 /* Header and footer styling */
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
