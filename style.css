@@ -1,93 +1,55 @@
-/* Default Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    color: black;
-    transition: background-color 0.3s, color 0.3s;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color, #fff);
+  color: var(--text-color, #111);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-header, footer {
-    padding: 20px;
-    text-align: center;
+body.dark-mode {
+  --bg-color: #0d1117;
+  --text-color: #e6edf3;
+  --accent-color: #58a6ff;
 }
 
-header h1 {
-    font-size: 2rem;
+header {
+  background-color: var(--accent-color, #4a90e2);
+  color: #fff;
+  padding: 2rem;
+  text-align: center;
 }
 
-header p {
-    font-size: 1rem;
-}
-
-/* Mode Toggle Button */
 .mode-toggle {
-    padding: 10px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-    background-color: #333;
-    color: white;
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  float: right;
+  margin-top: -3rem;
 }
 
-/* Intro Section */
-.intro {
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.intro h2 {
-    font-size: 1.8rem;
-}
-
-.intro p {
-    font-size: 1rem;
-}
-
-/* Scripts Section */
 .scripts {
-    padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .script-item {
-    margin-bottom: 20px;
-    background-color: #e0e0e0;
-    padding: 10px;
-    border-radius: 8px;
+  border: 1px solid var(--accent-color, #4a90e2);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
-.script-item h3 {
-    font-size: 1.5rem;
+a {
+  color: var(--accent-color, #4a90e2);
 }
 
-/* Dark Mode Styles */
-.dark-mode body {
-    background-color: #121212;
-    color: white;
-}
-
-.dark-mode header, .dark-mode footer {
-    background-color: #1a1a1a;
-    color: white;
-}
-
-.dark-mode .intro {
-    background-color: #333;
-}
-
-.dark-mode .script-item {
-    background-color: #333;
-    color: white;
-}
-
-.dark-mode .script-item h3 {
-    color: lightgray;
-}
-
-/* Ensuring text in the banner is readable in dark mode */
-.dark-mode .mode-toggle {
-    background-color: #fff;
-    color: #333;
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 2rem;
+  border-top: 1px solid #ccc;
 }
