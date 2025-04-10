@@ -151,7 +151,9 @@ a:hover, a:focus {
 
 .download-btn {
     transition: transform 0.3s ease-in-out;
-    margin-left: 10px;
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 20px;
 }
 
 .download-btn:hover {
