@@ -126,6 +126,14 @@ function renderScripts() {
         title.appendChild(titleLink);
         scriptDiv.appendChild(title);
 
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = `${rawURL}${script.file}`;
+        downloadLink.download = script.file;  // This ensures the file is downloaded instead of opened in the browser
+        downloadLink.textContent = 'Download Script';
+        downloadLink.className = 'download-btn';
+        scriptDiv.appendChild(downloadLink);
+
         const description = document.createElement('p');
         description.textContent = script.description;
         scriptDiv.appendChild(description);
