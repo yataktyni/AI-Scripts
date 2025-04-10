@@ -1,5 +1,5 @@
-const repoOwner = 'yataktyni';
-const repoName = 'main';
+const repoAPI = 'https://api.github.com/repos/yataktyni/AI-Scripts/contents';
+const rawURL = 'https://raw.githubusercontent.com/yataktyni/AI-Scripts/main/';
 
 document.addEventListener('DOMContentLoaded', () => {
     initMode();
@@ -17,6 +17,8 @@ function initMode() {
     } else {
         modeToggle.textContent = 'Dark 🌙 mode';
     }
+
+    modeToggle.addEventListener('click', toggleMode);
 }
 
 function toggleMode() {
@@ -33,7 +35,7 @@ async function fetchScripts() {
     const scriptsContainer = document.getElementById('scripts-container');
     const filterContainer = document.getElementById('filter-container');
 
-    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/`);
+    const response = await fetch(repoAPI);
     const files = await response.json();
 
     const scriptGroups = {};
@@ -67,7 +69,7 @@ async function fetchScripts() {
         filterContainer.appendChild(btn);
     });
 
-    // Display scripts grouped
+    // Display scripts
     allTags.forEach(tag => {
         const groupWrapper = document.createElement('div');
         groupWrapper.className = 'script-group';
@@ -124,8 +126,8 @@ function createFilterButton(tag, isActive = false) {
     return btn;
 }
 
-async function getDescription(filePath) {
-    const rawFile = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${filePath}`);
+async function getDescription(fileName) {
+    const rawFile = await fetch(`${rawURL}${fileName}`);
     const content = await rawFile.text();
     const descriptionMatch = content.match(/^::\s*Description:\s*(.+)$/mi);
     return descriptionMatch ? descriptionMatch[1].trim() : "No description found.";
