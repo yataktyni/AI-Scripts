@@ -1,107 +1,132 @@
-// Toggle dark/light mode
-const toggleBtn = document.getElementById('mode-toggle');
-const body = document.getElementById('body');
+const repoOwner = 'yataktyni';
+const repoName = 'main';
 
-function updateToggleLabel() {
-  toggleBtn.textContent = body.classList.contains('dark-mode') ? 'Light ☀️ mode' : 'Dark 🌙 mode';
+document.addEventListener('DOMContentLoaded', () => {
+    initMode();
+    fetchScripts();
+});
+
+function initMode() {
+    const body = document.body;
+    const modeToggle = document.getElementById('mode-toggle');
+
+    const savedMode = localStorage.getItem('mode') || 'dark';
+    if (savedMode === 'dark') {
+        body.classList.add('dark-mode');
+        modeToggle.textContent = 'Light 🌞 mode';
+    } else {
+        modeToggle.textContent = 'Dark 🌙 mode';
+    }
 }
 
 function toggleMode() {
-  body.classList.toggle('dark-mode');
-  localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
-  updateToggleLabel();
+    const body = document.body;
+    const modeToggle = document.getElementById('mode-toggle');
+
+    body.classList.toggle('dark-mode');
+    const newMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('mode', newMode);
+    modeToggle.textContent = newMode === 'dark' ? 'Light 🌞 mode' : 'Dark 🌙 mode';
 }
 
-toggleBtn.addEventListener('click', toggleMode);
+async function fetchScripts() {
+    const scriptsContainer = document.getElementById('scripts-container');
+    const filterContainer = document.getElementById('filter-container');
 
-// Load preferred theme
-if (localStorage.getItem('theme') === 'dark') {
-  body.classList.add('dark-mode');
-}
-updateToggleLabel();
+    const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/`);
+    const files = await response.json();
 
-// Define scripts array
-const scriptFiles = [
-  'wsl_clean.bat',
-  'wsl_start.bat',
-  'wsl_stop.bat',
-  'gaming_cache_clear.bat',
-  'gaming_optimize.bat',
-  'workstation_focus.bat',
-  'workstation_power.bat',
-];
+    const scriptGroups = {};
 
-const scriptGroups = {};
+    for (const file of files) {
+        if (file.name.endsWith('.bat')) {
+            const prefix = file.name.includes('_') ? file.name.split('_')[0].toUpperCase() : 'MISC';
+            if (!scriptGroups[prefix]) {
+                scriptGroups[prefix] = [];
+            }
 
-function getGroupName(fileName) {
-  const name = fileName.split('_')[0].toUpperCase();
-  return name;
-}
+            const description = await getDescription(file.name);
 
-function getTag(name) {
-  if (name.includes('gaming')) return 'GAMING';
-  if (name.includes('workstation')) return 'WORKSTATION';
-  if (name.includes('wsl')) return 'WSL';
-  return 'OTHER';
-}
+            scriptGroups[prefix].push({
+                name: file.name,
+                description,
+                path: file.path,
+                downloadUrl: file.download_url
+            });
+        }
+    }
 
-function renderScripts(filter = 'all') {
-  const container = document.getElementById('scripts-container');
-  container.innerHTML = '<h2>Available Scripts:</h2>';
+    const allTags = Object.keys(scriptGroups).sort();
 
-  Object.entries(scriptGroups).forEach(([group, files]) => {
-    if (filter !== 'all' && filter !== group) return;
+    // Create filter buttons
+    const allBtn = createFilterButton('ALL', true);
+    filterContainer.appendChild(allBtn);
 
-    const groupTitle = document.createElement('h3');
-    groupTitle.textContent = group;
-    groupTitle.style.marginTop = '1.5rem';
-    container.appendChild(groupTitle);
-
-    files.forEach(file => {
-      const div = document.createElement('div');
-      div.className = 'script-item';
-
-      const fileName = document.createElement('strong');
-      fileName.textContent = file;
-
-      const tag = document.createElement('span');
-      tag.className = 'tag';
-      tag.textContent = getTag(file);
-
-      const download = document.createElement('a');
-      download.href = file;
-      download.download = file;
-      download.textContent = 'Download';
-      download.className = 'download-btn';
-
-      div.appendChild(fileName);
-      div.appendChild(document.createElement('br'));
-      div.appendChild(tag);
-      div.appendChild(document.createElement('br'));
-      div.appendChild(download);
-      container.appendChild(div);
+    allTags.forEach(tag => {
+        const btn = createFilterButton(tag);
+        filterContainer.appendChild(btn);
     });
-  });
+
+    // Display scripts grouped
+    allTags.forEach(tag => {
+        const groupWrapper = document.createElement('div');
+        groupWrapper.className = 'script-group';
+        groupWrapper.dataset.group = tag;
+
+        const groupTitle = document.createElement('h3');
+        groupTitle.className = 'group-title';
+        groupTitle.textContent = tag;
+        groupWrapper.appendChild(groupTitle);
+
+        scriptGroups[tag].forEach(script => {
+            const scriptItem = document.createElement('div');
+            scriptItem.classList.add('script-item');
+            scriptItem.innerHTML = `
+                <h4>${script.name}</h4>
+                <p>${script.description}</p>
+                <a href="${script.downloadUrl}" class="download-btn" download>⬇ Download</a>
+            `;
+            groupWrapper.appendChild(scriptItem);
+        });
+
+        scriptsContainer.appendChild(groupWrapper);
+    });
+
+    // Filtering logic
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn =>
+        btn.addEventListener('click', () => {
+            const tag = btn.dataset.tag;
+
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const groups = document.querySelectorAll('.script-group');
+            groups.forEach(group => {
+                if (tag === 'ALL' || group.dataset.group === tag) {
+                    group.classList.remove('hidden');
+                    group.classList.add('fade-in');
+                } else {
+                    group.classList.add('hidden');
+                    group.classList.remove('fade-in');
+                }
+            });
+        })
+    );
 }
 
-// Group scripts by prefix
-scriptFiles.forEach(file => {
-  const group = getGroupName(file);
-  if (!scriptGroups[group]) scriptGroups[group] = [];
-  scriptGroups[group].push(file);
-});
+function createFilterButton(tag, isActive = false) {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    if (isActive) btn.classList.add('active');
+    btn.textContent = tag;
+    btn.dataset.tag = tag;
+    return btn;
+}
 
-// Populate dropdown
-const select = document.getElementById('group-select');
-Object.keys(scriptGroups).forEach(group => {
-  const opt = document.createElement('option');
-  opt.value = group;
-  opt.textContent = group;
-  select.appendChild(opt);
-});
-
-select.addEventListener('change', (e) => {
-  renderScripts(e.target.value);
-});
-
-renderScripts();
+async function getDescription(filePath) {
+    const rawFile = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${filePath}`);
+    const content = await rawFile.text();
+    const descriptionMatch = content.match(/^::\s*Description:\s*(.+)$/mi);
+    return descriptionMatch ? descriptionMatch[1].trim() : "No description found.";
+}
