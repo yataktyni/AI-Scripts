@@ -26,15 +26,11 @@ body.dark-mode {
 /* Header and footer styling */
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
-    color: #fff;
+    color: #4a4a4a;
     padding: 20px 0;
     text-align: center;
     margin: 0;
     border-radius: 0; /* Remove border-radius */
-}
-
-header h1, footer p {
-    margin-top: 10px;
 }
 
 footer a {
@@ -107,7 +103,7 @@ footer a:hover, footer a:focus {
 /* Links styling */
 a {
     text-decoration: none;
-    color: #2a7f64;
+    color: #4a4a4a;
     font-weight: bold;
 }
 
@@ -130,7 +126,7 @@ a:hover, a:focus {
     text-decoration: none; /* No underline */
 }
 
-#donate-btn.pulsing, .mode-toggle.pulsing {
+#donate-btn {
     animation: pulsate 1.5s infinite; /* Pulsation effect */
 }
 
@@ -177,8 +173,4 @@ header, footer {
 .mode-toggle:hover, .mode-toggle:focus {
     color: #e67e22; /* Hover color */
     transform: scale(1.1);
-}
-
-.mode-toggle:focus {
-    outline: 3px solid #4a4a4a; /* Clear focus outline */
 }
