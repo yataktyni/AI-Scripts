@@ -1,8 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s ease;
+    background-color: #f4f4f9;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .dark-mode {
@@ -10,36 +12,63 @@ body {
     color: #ffffff;
 }
 
-#top-controls {
+header {
+    background-color: #4CAF50;
+    color: white;
     padding: 20px;
     text-align: center;
+    border-bottom: 4px solid #388E3C;
 }
 
-#search-input {
+.header-container h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+#mode-toggle {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
     padding: 10px;
-    width: 60%;
-    margin: 10px 0;
+    cursor: pointer;
+    font-size: 1em;
 }
 
-#filter-container {
+#top-controls {
     display: flex;
     justify-content: center;
     margin: 20px;
 }
 
-.filter-btn {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    margin: 0 5px;
+#search-input {
+    width: 60%;
     padding: 10px;
-    cursor: pointer;
     border-radius: 5px;
+    border: 2px solid #ccc;
+    font-size: 1.1em;
+}
+
+#filter-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.filter-btn {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
     transition: background-color 0.3s;
 }
 
 .filter-btn:hover {
-    background: #45a049;
+    background-color: #007B9A;
 }
 
 #scripts-container {
@@ -47,64 +76,50 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
 }
 
 .script-item {
-    background: #f4f4f4;
-    padding: 15px;
+    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
 
 .script-item:hover {
-    background-color: #e2e2e2;
-}
-
-button {
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #007B9A;
+    transform: scale(1.05);
 }
 
 #donation {
     text-align: center;
-    margin-top: 40px;
+    margin: 20px 0;
 }
 
 #donate-btn {
-    background-color: #FF6347;
+    background-color: #FF9800;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
+    font-size: 1.2em;
     text-decoration: none;
-    font-size: 16px;
 }
 
 #donate-btn:hover {
-    background-color: #FF4500;
+    background-color: #FB8C00;
 }
 
 footer {
+    background-color: #333;
+    color: white;
     text-align: center;
-    margin-top: 40px;
-    padding: 20px;
+    padding: 10px;
+    position: relative;
 }
 
 footer a {
-    color: inherit;
-    text-decoration: none;
+    color: #FFEB3B;
 }
 
-footer p {
-    color: #777;
+footer a:hover {
+    text-decoration: underline;
 }
