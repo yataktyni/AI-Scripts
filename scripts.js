@@ -150,16 +150,18 @@ function renderScripts() {
         const downloadBtn = document.createElement('button');
         downloadBtn.classList.add('download-btn');
         
-        // Adding the download icon and text
+        // Adding the download icon and title attribute
         const downloadIcon = document.createElement('span');
         downloadIcon.textContent = '⏬'; // Smiley-style download icon (you can choose another one if needed)
         downloadBtn.appendChild(downloadIcon);
         
-        downloadBtn.appendChild(document.createTextNode(' Download Script'));
+        // Set the title attribute for the button
+        downloadBtn.title = 'Download Script';
+
         downloadBtn.addEventListener('click', () => {
             downloadScript(`${rawURL}${script.file}`, script.file);
         });
-        
+
         scriptDiv.appendChild(downloadBtn);
 
         const description = document.createElement('p');
