@@ -99,6 +99,26 @@ function renderFilterButtons() {
     });
 }
 
+function downloadScript(scriptUrl, scriptName) {
+    fetch(scriptUrl)
+        .then(response => response.text())
+        .then(data => {
+            // Create a Blob from the fetched data
+            const blob = new Blob([data], { type: 'text/plain' });
+            const link = document.createElement('a');
+
+            // Create a download link and trigger download
+            link.href = URL.createObjectURL(blob);
+            link.download = scriptName; // Name the file according to the script name
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        })
+        .catch(error => {
+            console.error('Error downloading the script:', error);
+        });
+}
+
 function renderScripts() {
     const container = document.getElementById('scripts-container');
     container.innerHTML = '';
@@ -126,13 +146,14 @@ function renderScripts() {
         title.appendChild(titleLink);
         scriptDiv.appendChild(title);
 
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = `${rawURL}${script.file}`;
-        downloadLink.download = script.file;  // This ensures the file is downloaded instead of opened in the browser
-        downloadLink.textContent = 'Download Script';
-        downloadLink.className = 'download-btn';
-        scriptDiv.appendChild(downloadLink);
+        // Create a download button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = 'Download Script';
+        downloadBtn.className = 'download-btn';
+        downloadBtn.addEventListener('click', () => {
+            downloadScript(`${rawURL}${script.file}`, script.file);
+        });
+        scriptDiv.appendChild(downloadBtn);
 
         const description = document.createElement('p');
         description.textContent = script.description;
@@ -141,3 +162,4 @@ function renderScripts() {
         container.appendChild(scriptDiv);
     });
 }
+
