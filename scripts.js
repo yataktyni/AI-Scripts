@@ -169,4 +169,3 @@ function renderScripts() {
         container.appendChild(scriptDiv);
     });
 }
-
