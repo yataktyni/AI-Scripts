@@ -101,10 +101,15 @@ function displayScripts(container, categorizedScripts) {
         scriptItem.classList.add('script-item');
         scriptItem.innerHTML = `
             <h3>${file.name}</h3>
-            <p>${getDescription(file.path)}</p>
+            <p id="description-${file.name}">Loading description...</p>
             <button onclick="downloadScript('${file.download_url}')">Download</button>
         `;
         container.appendChild(scriptItem);
+
+        // Fetch description asynchronously and update
+        getDescription(file.path).then(description => {
+            document.getElementById(`description-${file.name}`).innerText = description;
+        });
     });
 }
 
