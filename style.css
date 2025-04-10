@@ -10,6 +10,12 @@ body {
     background-color: #f4f4f4;
     color: #333;
     margin: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+    background-color: #181818;
+    color: #fff;
 }
 
 header {
@@ -28,6 +34,14 @@ header p {
     font-size: 1.2rem;
 }
 
+header .mode-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
 section {
     margin: 30px 0;
     padding: 15px;
@@ -38,10 +52,6 @@ section {
 section h2 {
     font-size: 1.8rem;
     color: #1a73e8;
-}
-
-section p {
-    font-size: 1.1rem;
 }
 
 footer {
@@ -57,4 +67,30 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.script-item {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.script-item h3 {
+    font-size: 1.5rem;
+    color: #1a73e8;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    section h2 {
+        font-size: 1.5rem;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
 }
