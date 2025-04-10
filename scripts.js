@@ -35,15 +35,17 @@ async function fetchScripts() {
         const response = await fetch(repoAPI);
         const data = await response.json();
 
-        const scripts = data.filter(item => item.name.endsWith('.bat') || item.name.endsWith('.ps1'));
+        const scripts = data.filter(item => item.name.endsWith('.bat') || item.name.endsWith('.ps1') || item.name.endsWith('.sh'));
         allScripts = scripts.map(script => {
-            const name = script.name.replace(/\.(bat|ps1)$/, '');
+            const name = script.name.replace(/\.(bat|ps1|sh)$/, '');
             const categoryMatch = name.match(/^\[(.*?)\]/);
             const category = categoryMatch ? categoryMatch[1] : 'MISC';
+            const description = extractDescription(script);
             return {
                 name: name,
                 file: script.name,
-                category: category.toUpperCase()
+                category: category.toUpperCase(),
+                description: description
             };
         });
 
@@ -52,6 +54,17 @@ async function fetchScripts() {
     } catch (error) {
         console.error('Error fetching scripts:', error);
     }
+}
+
+function extractDescription(script) {
+    const fileUrl = `${rawURL}${script.name}`;
+    return fetch(fileUrl)
+        .then(res => res.text())
+        .then(data => {
+            const match = data.match(/:: Description\s*(.*)/);
+            return match ? match[1] : 'No description available';
+        })
+        .catch(() => 'No description available');
 }
 
 function renderFilterButtons() {
@@ -86,7 +99,6 @@ function renderFilterButtons() {
 
 function renderScripts() {
     const container = document.getElementById('scripts-container');
-    const noResults = document.getElementById('no-results');
     container.innerHTML = '';
 
     const filtered = allScripts.filter(script => {
@@ -96,10 +108,8 @@ function renderScripts() {
     });
 
     if (filtered.length === 0) {
-        noResults.style.display = 'block';
+        container.innerHTML = '<p>No results found</p>';
         return;
-    } else {
-        noResults.style.display = 'none';
     }
 
     filtered.forEach(script => {
@@ -109,6 +119,10 @@ function renderScripts() {
         const title = document.createElement('h3');
         title.textContent = `${categoryIcons[script.category] || ''} ${script.name}`;
         scriptDiv.appendChild(title);
+
+        const description = document.createElement('p');
+        description.textContent = script.description;
+        scriptDiv.appendChild(description);
 
         const viewBtn = document.createElement('a');
         viewBtn.href = `${rawURL}${script.file}`;
