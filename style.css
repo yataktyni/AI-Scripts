@@ -27,10 +27,14 @@ body.dark-mode {
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
     color: #4a4a4a;
-    padding: 20px 0;
+    padding: 20px;
     text-align: center;
     margin: 0;
     border-radius: 0; /* Remove border-radius */
+}
+
+.intro, #top-controls, #filter-container, #scripts-container, #donation {
+    padding: 20px;
 }
 
 footer a {
@@ -115,7 +119,7 @@ a:hover, a:focus {
 /* Donation and mode toggle button styles */
 #donate-btn, .mode-toggle {
     display: inline-block;
-    margin-top: 20px;
+    margin: 20px auto;
     font-size: 1.2em;
     padding: 10px 20px;
     border-radius: 5px;
