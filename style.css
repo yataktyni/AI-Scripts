@@ -1,26 +1,36 @@
+/* Old Money Color Palette */
+:root {
+    --cream: #f5f5dc;
+    --taupe: #d2b48c;
+    --beige: #f5f5dc;
+    --deep-green: #355e3b;
+    --burgundy: #800020;
+    --dark-gray: #333;
+    --light-gray: #ccc;
+    --white: #fff;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    padding: 20px;
+    background-color: var(--cream);
+    color: var(--dark-gray);
+    text-align: center;
     transition: background-color 0.3s, color 0.3s;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .dark-mode {
-    background-color: #121212;
-    color: #ffffff;
+    background-color: var(--dark-gray);
+    color: var(--white);
 }
 
-header {
-    background-color: #4CAF50;
-    color: white;
+header, .intro, footer {
+    background-color: var(--taupe);
+    color: var(--white);
     padding: 20px;
-    text-align: center;
-    border-bottom: 4px solid #388E3C;
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
 .header-container h1 {
@@ -29,26 +39,26 @@ header {
 }
 
 #mode-toggle {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
+    background: var(--deep-green);
+    color: var(--white);
+    border: none;
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
     font-size: 1em;
+    margin-top: 10px;
 }
 
 #top-controls {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
+    margin: 20px 0;
 }
 
 #search-input {
-    width: 60%;
+    width: 80%;
+    max-width: 600px;
     padding: 10px;
     border-radius: 5px;
-    border: 2px solid #ccc;
+    border: 2px solid var(--light-gray);
     font-size: 1.1em;
 }
 
@@ -60,8 +70,8 @@ header {
 }
 
 .filter-btn {
-    background-color: #008CBA;
-    color: white;
+    background-color: var(--deep-green);
+    color: var(--white);
     padding: 10px 20px;
     margin: 5px;
     border-radius: 5px;
@@ -71,12 +81,8 @@ header {
     transition: background-color 0.3s;
 }
 
-.filter-btn.active {
-    background-color: #005f73;
-}
-
-.filter-btn:hover {
-    background-color: #007B9A;
+.filter-btn.active, .filter-btn:hover {
+    background-color: var(--burgundy);
 }
 
 #scripts-container {
@@ -84,51 +90,18 @@ header {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
-    flex: 1;
 }
 
 .script-item {
-    background-color: white;
+    background-color: var(--beige);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
+    text-align: left;
 }
 
 .script-item:hover {
-    transform: scale(1.05);
-}
-
-#donation {
-    text-align: center;
-    margin: 20px 0;
-}
-
-#donate-btn {
-    background-color: #FF9800;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.2em;
-    text-decoration: none;
-}
-
-#donate-btn:hover {
-    background-color: #FB8C00;
-}
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    margin-top: auto;
-}
-
-footer a {
-    color: #FFEB3B;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
+    transform: scale(1.05
+::contentReference[oaicite:21]{index=21}
+ 
