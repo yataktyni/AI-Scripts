@@ -1,9 +1,11 @@
+/* Reset default margin and padding */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body styles */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0e6d2; /* Old money light neutral color */
@@ -15,41 +17,47 @@ body {
     min-height: 100vh;
 }
 
+/* Dark mode styles */
 body.dark-mode {
     background-color: #2a2a2a; /* Dark background for dark mode */
     color: #f0e6d2; /* Light text for dark mode */
 }
 
+/* Header and footer styling */
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
-    color: #4a4a4a;
-    padding: 20px;
-    margin: 0;
+    color: #fff;
+    padding: 20px 0;
     text-align: center;
+    margin: 0;
+    border-radius: 0; /* Remove border-radius */
 }
 
-header h1 {
-    color: #4a4a4a;
-}
-
-header p, footer p {
+header h1, footer p {
     margin-top: 10px;
 }
 
-#top-controls {
-    margin-top: 20px;
+footer a {
+    color: inherit; /* Inherit text color from footer */
+    text-decoration: none;
 }
 
+footer a:hover, footer a:focus {
+    text-decoration: underline;
+}
+
+/* Search input field styling */
 #search-input {
     padding: 10px;
     width: 80%;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     font-size: 1.1em;
     border: 2px solid #4a4a4a;
     border-radius: 5px;
 }
 
+/* Filter buttons styling */
 #filter-container {
     margin: 20px 0;
 }
@@ -62,7 +70,7 @@ header p, footer p {
     border-radius: 5px;
     font-size: 1em;
     background-color: #4a4a4a; /* Dark background for filter button */
-    color: #f0e6d2; /* Light text color for dark mode */
+    color: #f0e6d2; /* Light text color */
 }
 
 .filter-btn.active {
@@ -70,11 +78,11 @@ header p, footer p {
     color: #fff;
 }
 
+/* Script container and item styling */
 #scripts-container {
     margin-top: 20px;
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
 .script-item {
@@ -96,6 +104,7 @@ header p, footer p {
     color: #666;
 }
 
+/* Links styling */
 a {
     text-decoration: none;
     color: #2a7f64;
@@ -107,15 +116,7 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
-footer a {
-    color: #4a4a4a;
-}
-
-footer a:hover, footer a:focus {
-    color: #4a4a4a;
-    text-decoration: underline;
-}
-
+/* Donation and mode toggle button styles */
 #donate-btn, .mode-toggle {
     display: inline-block;
     margin-top: 20px;
@@ -124,19 +125,19 @@ footer a:hover, footer a:focus {
     border-radius: 5px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    background-color: #4a4a4a; /* Dark background for both light and dark mode */
+    background-color: #4a4a4a; /* Dark background */
     color: #f0e6d2; /* Light text color */
-    text-decoration: none; /* No underline for donation button */
+    text-decoration: none; /* No underline */
 }
 
-#donate-btn, .mode-toggle {
+#donate-btn.pulsing, .mode-toggle.pulsing {
     animation: pulsate 1.5s infinite; /* Pulsation effect */
 }
 
 #donate-btn:hover, #donate-btn:focus, .mode-toggle:hover, .mode-toggle:focus {
     color: #e67e22; /* Hover color */
     transform: scale(1.1);
-    animation: none;
+    animation: none; /* Disable pulsation on hover/focus */
 }
 
 /* Pulsation animation */
@@ -154,21 +155,12 @@ footer a:hover, footer a:focus {
 
 /* Focus styles for accessibility */
 a:focus, .filter-btn:focus, #donate-btn:focus, .mode-toggle:focus {
-    outline: 3px solid #2a7f64; /* Clear focus outline */
+    outline: 3px solid #4a4a4a; /* Clear focus outline */
 }
 
+/* Footer position */
 footer {
-    background-color: #b79b6e; /* Rich old money gold color */
-    color: #fff;
-    padding: 10px;
-    text-align: center;
-    margin: 0;
     margin-top: auto; /* Ensure footer stays at the bottom */
-}
-
-/* Ensure spacing between buttons and content */
-#donate-btn, .mode-toggle {
-    margin-bottom: 20px;
 }
 
 /* Remove border-radius from header and footer */
@@ -176,7 +168,7 @@ header, footer {
     border-radius: 0;
 }
 
-/* Mode Toggle Button Styles */
+/* Mode toggle button specific styles */
 .mode-toggle {
     background-color: #4a4a4a;
     color: #f0e6d2; /* Light text for dark mode */
@@ -187,7 +179,6 @@ header, footer {
     transform: scale(1.1);
 }
 
-/* Make the mode toggle button more accessible */
 .mode-toggle:focus {
-    outline: 3px solid #e67e22; /* Clear focus outline */
+    outline: 3px solid #4a4a4a; /* Clear focus outline */
 }
