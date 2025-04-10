@@ -61,7 +61,7 @@ async function extractDescription(script) {
     try {
         const res = await fetch(fileUrl);
         const data = await res.text();
-        const match = data.match(/:: Description\s*(.*)/);
+        const match = data.match(/:: Description:\s*(.*)/);
         return match ? match[1] : 'No description available';
     } catch (error) {
         console.error('Error fetching description:', error);
