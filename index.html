@@ -59,7 +59,7 @@
 
         // Fetch .bat files and their descriptions from the repo (via GitHub API)
         async function fetchScripts() {
-            const response = await fetch('https://api.github.com/repos/yataktyni/main/scripts'); // Adjust the path as needed
+            const response = await fetch('https://api.github.com/repos/yataktyni/main'); // Adjust the path as needed
             const data = await response.json();
             const scriptsContainer = document.getElementById('scripts-container');
             data.forEach(file => {
