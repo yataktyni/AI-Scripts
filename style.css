@@ -1,96 +1,93 @@
-/* Reset styles for a clean slate */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Default Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: white;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-body.dark-mode {
-    background-color: #181818;
-    color: #fff;
-}
-
-header {
-    text-align: center;
-    background-color: #1a73e8;
-    color: white;
+header, footer {
     padding: 20px;
-    border-radius: 8px;
+    text-align: center;
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 header p {
-    font-size: 1.2rem;
-}
-
-header .mode-toggle {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: white;
-}
-
-section {
-    margin: 30px 0;
-    padding: 15px;
-    background-color: white;
-    border-radius: 8px;
-}
-
-section h2 {
-    font-size: 1.8rem;
-    color: #1a73e8;
-}
-
-footer {
-    text-align: center;
-    margin-top: 50px;
     font-size: 1rem;
 }
 
-footer a {
-    color: #1a73e8;
-    text-decoration: none;
+/* Mode Toggle Button */
+.mode-toggle {
+    padding: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: white;
 }
 
-footer a:hover {
-    text-decoration: underline;
+/* Intro Section */
+.intro {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.intro h2 {
+    font-size: 1.8rem;
+}
+
+.intro p {
+    font-size: 1rem;
+}
+
+/* Scripts Section */
+.scripts {
+    padding: 20px;
 }
 
 .script-item {
-    margin: 15px 0;
-    padding: 15px;
-    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    background-color: #e0e0e0;
+    padding: 10px;
     border-radius: 8px;
 }
 
 .script-item h3 {
     font-size: 1.5rem;
-    color: #1a73e8;
 }
 
-@media (max-width: 600px) {
-    header h1 {
-        font-size: 2rem;
-    }
+/* Dark Mode Styles */
+.dark-mode body {
+    background-color: #121212;
+    color: white;
+}
 
-    section h2 {
-        font-size: 1.5rem;
-    }
+.dark-mode header, .dark-mode footer {
+    background-color: #1a1a1a;
+    color: white;
+}
 
-    footer {
-        font-size: 0.9rem;
-    }
+.dark-mode .intro {
+    background-color: #333;
+}
+
+.dark-mode .script-item {
+    background-color: #333;
+    color: white;
+}
+
+.dark-mode .script-item h3 {
+    color: lightgray;
+}
+
+/* Ensuring text in the banner is readable in dark mode */
+.dark-mode .mode-toggle {
+    background-color: #fff;
+    color: #333;
 }
