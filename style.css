@@ -23,6 +23,10 @@ body.dark-mode {
     color: #f0e6d2; /* Light text for dark mode */
 }
 
+p:not(:last-child) {
+    margin-bottom: 10px;
+}
+
 /* Header and footer styling */
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
