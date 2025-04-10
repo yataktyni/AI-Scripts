@@ -1,2 +1,3 @@
 # AI-Scripts
-Ussefull AI-generated (sometimes - manually adjusted/edited) scripts for your Workstation &amp;/or Gaming PC
+
+AI-generated, sometimes manually edited, scripts are offered for workstation and gaming PCs.  These scripts aim to improve functionality and/or performance.
