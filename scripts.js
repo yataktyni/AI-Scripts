@@ -36,18 +36,18 @@ async function fetchScripts() {
         const data = await response.json();
 
         const scripts = data.filter(item => item.name.endsWith('.bat') || item.name.endsWith('.ps1') || item.name.endsWith('.sh'));
-        allScripts = scripts.map(script => {
+        allScripts = await Promise.all(scripts.map(async script => {
             const name = script.name.replace(/\.(bat|ps1|sh)$/, '');
             const categoryMatch = name.match(/^\[(.*?)\]/);
             const category = categoryMatch ? categoryMatch[1] : 'MISC';
-            const description = extractDescription(script);
+            const description = await extractDescription(script);
             return {
                 name: name,
                 file: script.name,
                 category: category.toUpperCase(),
                 description: description
             };
-        });
+        }));
 
         renderFilterButtons();
         renderScripts();
@@ -56,15 +56,17 @@ async function fetchScripts() {
     }
 }
 
-function extractDescription(script) {
+async function extractDescription(script) {
     const fileUrl = `${rawURL}${script.name}`;
-    return fetch(fileUrl)
-        .then(res => res.text())
-        .then(data => {
-            const match = data.match(/:: Description\s*(.*)/);
-            return match ? match[1] : 'No description available';
-        })
-        .catch(() => 'No description available');
+    try {
+        const res = await fetch(fileUrl);
+        const data = await res.text();
+        const match = data.match(/:: Description\s*(.*)/);
+        return match ? match[1] : 'No description available';
+    } catch (error) {
+        console.error('Error fetching description:', error);
+        return 'No description available';
+    }
 }
 
 function renderFilterButtons() {
