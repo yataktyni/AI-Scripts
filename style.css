@@ -69,6 +69,8 @@ footer a:hover, footer a:focus {
     cursor: pointer;
     border-radius: 5px;
     font-size: 1em;
+    font-weight: bold;
+    height: 42px;
     background-color: #4a4a4a; /* Dark background for filter button */
     color: #f0e6d2; /* Light text color */
 }
