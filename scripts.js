@@ -146,13 +146,20 @@ function renderScripts() {
         title.appendChild(titleLink);
         scriptDiv.appendChild(title);
 
-        // Create download button
+        // Create download button with download icon
         const downloadBtn = document.createElement('button');
         downloadBtn.classList.add('download-btn');
-        downloadBtn.textContent = 'Download Script';
+        
+        // Adding the download icon and text
+        const downloadIcon = document.createElement('span');
+        downloadIcon.textContent = '⏬'; // Smiley-style download icon (you can choose another one if needed)
+        downloadBtn.appendChild(downloadIcon);
+        
+        downloadBtn.appendChild(document.createTextNode(' Download Script'));
         downloadBtn.addEventListener('click', () => {
             downloadScript(`${rawURL}${script.file}`, script.file);
         });
+        
         scriptDiv.appendChild(downloadBtn);
 
         const description = document.createElement('p');
@@ -162,3 +169,4 @@ function renderScripts() {
         container.appendChild(scriptDiv);
     });
 }
+
