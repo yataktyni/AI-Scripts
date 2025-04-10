@@ -149,6 +149,11 @@ a:hover, a:focus {
     animation: none; /* Disable pulsation on hover/focus */
 }
 
+.download-btn {
+    transition: transform 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
 .download-btn:hover {
     text-decoration: none;
     transform: scale(1.1);
