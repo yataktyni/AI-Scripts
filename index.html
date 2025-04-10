@@ -1,86 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Optimize your gaming or workstation PC with AI generated scripts.">
-    <title>PC Optimization Scripts</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Optimize your gaming or workstation PC with AI generated scripts." />
+  <title>PC Optimization Scripts</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body id="body">
-    <header>
-        <div class="header-container">
-            <h1>PC Optimization Scripts</h1>
-            <button id="mode-toggle" class="mode-toggle" onclick="toggleMode()">Dark 🌙 mode</button>
-        </div>
-        <p>AI-generated scripts to optimize your gaming or workstation PC performance.</p>
-    </header>
+  <header>
+    <div class="header-container">
+      <h1>PC Optimization Scripts</h1>
+      <button id="mode-toggle" class="mode-toggle" onclick="toggleMode()">Dark 🌙 mode</button>
+    </div>
+    <p>AI-generated scripts to optimize your gaming or workstation PC performance.</p>
+  </header>
 
-    <section class="intro">
-        <h2>Why Optimize?</h2>
-        <p>These AI scripts help you get the best performance from your PC, whether you're gaming or working. Improve efficiency, save power, and increase performance with a few simple steps.</p>
-    </section>
+  <section class="intro">
+    <h2>Why Optimize?</h2>
+    <p>These AI scripts help you get the best performance from your PC, whether you're gaming or working. Improve efficiency, save power, and increase performance with a few simple steps.</p>
+  </section>
 
-    <section class="scripts" id="scripts-container">
-        <h2>Available Scripts:</h2>
-        <!-- List of .bat scripts will be dynamically inserted here -->
-    </section>
+  <section class="scripts" id="scripts-container">
+    <h2>Available Scripts:</h2>
+    <!-- List of .bat scripts will be dynamically inserted here -->
+  </section>
 
-    <footer>
-        <p>Created with ❤️ by <a href="https://x.com/yataktyni" target="_blank">yataktyni</a>. <br> Licensed under <a href="https://choosealicense.com/licenses/mit/">MIT License</a></p>
-    </footer>
+  <footer>
+    <p>Created with ❤️ by <a href="https://x.com/yataktyni" target="_blank">yataktyni</a>. <br> Licensed under <a href="https://choosealicense.com/licenses/mit/">MIT License</a></p>
+  </footer>
 
-    <script>
-        // Dark/Light Mode Toggle
-        function toggleMode() {
-            const body = document.getElementById('body');
-            const modeToggle = document.getElementById('mode-toggle');
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                modeToggle.textContent = 'Light 🌞 mode'; // Switch to Light Mode
-                localStorage.setItem('mode', 'dark');
-            } else {
-                modeToggle.textContent = 'Dark 🌙 mode'; // Switch to Dark Mode
-                localStorage.setItem('mode', 'light');
-            }
+  <script>
+    function toggleMode() {
+      const body = document.getElementById("body");
+      const modeToggle = document.getElementById("mode-toggle");
+      body.classList.toggle("dark-mode");
+      const isDark = body.classList.contains("dark-mode");
+      modeToggle.textContent = isDark ? "Light 🌞 mode" : "Dark 🌙 mode";
+      localStorage.setItem("mode", isDark ? "dark" : "light");
+    }
+
+    window.onload = () => {
+      const savedMode = localStorage.getItem("mode") || "dark";
+      if (savedMode === "dark") {
+        document.getElementById("body").classList.add("dark-mode");
+        document.getElementById("mode-toggle").textContent = "Light 🌞 mode";
+      }
+      fetchScripts();
+    };
+
+    async function fetchScripts() {
+      const scriptsContainer = document.getElementById("scripts-container");
+      try {
+        const res = await fetch("https://api.github.com/repos/yataktyni/AI-Scripts/contents/");
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          scriptsContainer.innerHTML += `<p>Error: Could not load scripts.</p>`;
+          console.error("Unexpected response:", data);
+          return;
         }
 
-        // Set initial mode based on localStorage (remember user's preference)
-        window.onload = () => {
-            const savedMode = localStorage.getItem('mode') || 'dark';
-            if (savedMode === 'dark') {
-                document.getElementById('body').classList.add('dark-mode');
-                document.getElementById('mode-toggle').textContent = '🌞'; // Light Mode Icon
-            } else {
-                document.getElementById('mode-toggle').textContent = '🌙'; // Dark Mode Icon
-            }
-            fetchScripts(); // Fetch .bat files from the repo
-        };
-
-        // Fetch .bat files and their descriptions from the repo (via GitHub API)
-        async function fetchScripts() {
-            const response = await fetch('https://api.github.com/repos/yataktyni/main'); // Adjust the path as needed
-            const data = await response.json();
-            const scriptsContainer = document.getElementById('scripts-container');
-            data.forEach(file => {
-                if (file.name.endsWith('.bat')) {
-                    const scriptItem = document.createElement('div');
-                    scriptItem.classList.add('script-item');
-                    scriptItem.innerHTML = `
-                        <h3>${file.name}</h3>
-                        <p>${getDescription(file.path)}</p>
-                    `;
-                    scriptsContainer.appendChild(scriptItem);
-                }
-            });
+        for (const file of data) {
+          if (file.name.endsWith(".bat")) {
+            const description = await getDescription(file.path);
+            const scriptItem = document.createElement("div");
+            scriptItem.classList.add("script-item");
+            scriptItem.innerHTML = `<h3>${file.name}</h3><p>${description}</p>`;
+            scriptsContainer.appendChild(scriptItem);
+          }
         }
+      } catch (error) {
+        console.error("Error loading scripts:", error);
+        scriptsContainer.innerHTML += `<p>Failed to load scripts.</p>`;
+      }
+    }
 
-        // This function simulates getting description from .bat files (adjust to actual content fetching)
-        async function getDescription(filePath) {
-            const rawFile = await fetch('https://raw.githubusercontent.com/<your-username>/<repo-name>/main/' + filePath);
-            const content = await rawFile.text();
-            return content.split('\n')[0]; // Assuming first line is the description
-        }
-    </script>
+    async function getDescription(filePath) {
+      const url = `https://raw.githubusercontent.com/yataktyni/AI-Scripts/main/${filePath}`;
+      const res = await fetch(url);
+      const text = await res.text();
+      return text.split("\n")[0] || "No description.";
+    }
+  </script>
 </body>
 </html>
