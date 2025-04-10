@@ -144,25 +144,19 @@ function renderScripts() {
         titleLink.target = '_blank';
         titleLink.textContent = `${categoryIcons[script.category] || ''} ${script.name}`;
         title.appendChild(titleLink);
-        scriptDiv.appendChild(title);
 
-        // Create download button with download icon
-        const downloadBtn = document.createElement('button');
-        downloadBtn.classList.add('download-btn');
-        
-        // Adding the download icon and title attribute
-        const downloadIcon = document.createElement('span');
-        downloadIcon.textContent = '⏬'; // Smiley-style download icon (you can choose another one if needed)
-        downloadBtn.appendChild(downloadIcon);
-        
-        // Set the title attribute for the button
-        downloadBtn.title = 'Download Script';
-
-        downloadBtn.addEventListener('click', () => {
+        // Create a download link and add it after the title
+        const downloadLink = document.createElement('a');
+        downloadLink.href = '#';
+        downloadLink.title = 'Download Script';
+        downloadLink.textContent = ' ⏬ Download Script';
+        downloadLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent the default link behavior
             downloadScript(`${rawURL}${script.file}`, script.file);
         });
 
-        scriptDiv.appendChild(downloadBtn);
+        title.appendChild(downloadLink); // Add download link after title
+        scriptDiv.appendChild(title);
 
         const description = document.createElement('p');
         description.textContent = script.description;
