@@ -9,8 +9,10 @@ body {
     background-color: #f0e6d2; /* Old money light neutral color */
     color: #4a4a4a; /* Dark neutral text color */
     text-align: center;
-    padding: 20px;
     line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 body.dark-mode {
@@ -20,10 +22,10 @@ body.dark-mode {
 
 header, footer {
     background-color: #b79b6e; /* Rich old money gold color */
-    color: #fff;
+    color: #4a4a4a;
     padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
+    margin: 0;
+    text-align: center;
 }
 
 header h1 {
@@ -53,17 +55,18 @@ header p, footer p {
 }
 
 .filter-btn {
-    margin: 5px;
-    padding: 10px;
+    margin: 10px;
+    padding: 10px 20px;
     border: none;
-    background-color: #e1c69d; /* Lighter old money color */
-    color: #4a4a4a;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 1em;
+    background-color: #4a4a4a; /* Dark background for filter button */
+    color: #f0e6d2; /* Light text color for dark mode */
 }
 
 .filter-btn.active {
-    background-color: #8f7b51; /* Rich accent color */
+    background-color: #8f7b51; /* Active state color */
     color: #fff;
 }
 
@@ -99,34 +102,92 @@ a {
     font-weight: bold;
 }
 
-a:hover {
+a:hover, a:focus {
     color: #4a9a6f;
+    text-decoration: underline;
 }
 
 footer a {
-    color: #fff;
+    color: #4a4a4a;
 }
 
-footer a:hover {
-    color: #f0e6d2;
+footer a:hover, footer a:focus {
+    color: #4a4a4a;
+    text-decoration: underline;
 }
 
-#donate-btn {
-    display: block;
+#donate-btn, .mode-toggle {
+    display: inline-block;
     margin-top: 20px;
     font-size: 1.2em;
-    color: #4a9a6f;
-    text-decoration: underline;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    background-color: #4a4a4a; /* Dark background for both light and dark mode */
+    color: #f0e6d2; /* Light text color */
+    text-decoration: none; /* No underline for donation button */
 }
 
-#donate-btn:hover {
-    color: #8f7b51;
+#donate-btn, .mode-toggle {
+    animation: pulsate 1.5s infinite; /* Pulsation effect */
 }
 
-a:hover {
-    text-decoration: underline;
+#donate-btn:hover, #donate-btn:focus, .mode-toggle:hover, .mode-toggle:focus {
+    color: #e67e22; /* Hover color */
+    transform: scale(1.1);
+    animation: none;
 }
 
-footer a:hover {
-    text-decoration: underline;
+/* Pulsation animation */
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Focus styles for accessibility */
+a:focus, .filter-btn:focus, #donate-btn:focus, .mode-toggle:focus {
+    outline: 3px solid #2a7f64; /* Clear focus outline */
+}
+
+footer {
+    background-color: #b79b6e; /* Rich old money gold color */
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    margin: 0;
+    margin-top: auto; /* Ensure footer stays at the bottom */
+}
+
+/* Ensure spacing between buttons and content */
+#donate-btn, .mode-toggle {
+    margin-bottom: 20px;
+}
+
+/* Remove border-radius from header and footer */
+header, footer {
+    border-radius: 0;
+}
+
+/* Mode Toggle Button Styles */
+.mode-toggle {
+    background-color: #4a4a4a;
+    color: #f0e6d2; /* Light text for dark mode */
+}
+
+.mode-toggle:hover, .mode-toggle:focus {
+    color: #e67e22; /* Hover color */
+    transform: scale(1.1);
+}
+
+/* Make the mode toggle button more accessible */
+.mode-toggle:focus {
+    outline: 3px solid #e67e22; /* Clear focus outline */
 }
