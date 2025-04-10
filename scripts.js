@@ -138,7 +138,6 @@ function renderScripts() {
         const scriptDiv = document.createElement('div');
         scriptDiv.className = 'script-item';
 
-        // Create Title with Link
         const title = document.createElement('h3');
         const titleLink = document.createElement('a');
         titleLink.href = `${rawURL}${script.file}`;
@@ -147,27 +146,19 @@ function renderScripts() {
         title.appendChild(titleLink);
         scriptDiv.appendChild(title);
 
-        // Create the download button with regular smiley icon and download functionality
-        const downloadLink = document.createElement('a');
-        downloadLink.href = `${rawURL}${script.file}`;
-        downloadLink.download = script.file; // Ensure the file is downloaded with its original name
-        downloadLink.title = 'Download Script';
-        downloadLink.classList.add('download-link');
-        
-        // Add regular smiley icon (using categoryIcons)
-        const icon = document.createElement('span');
-        icon.textContent = '⬇️';  // Using the down arrow emoji (can replace it with other emojis)
-        downloadLink.appendChild(icon);
+        // Create download button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.classList.add('download-btn');
+        downloadBtn.textContent = 'Download Script';
+        downloadBtn.addEventListener('click', () => {
+            downloadScript(`${rawURL}${script.file}`, script.file);
+        });
+        scriptDiv.appendChild(downloadBtn);
 
-        // Append the download link after the title
-        title.appendChild(downloadLink);
-
-        // Add description
         const description = document.createElement('p');
         description.textContent = script.description;
         scriptDiv.appendChild(description);
 
-        // Append the scriptDiv to the container
         container.appendChild(scriptDiv);
     });
 }
