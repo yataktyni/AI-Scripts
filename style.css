@@ -5,6 +5,9 @@ body {
     background-color: #f4f4f9;
     color: #333;
     transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .dark-mode {
@@ -52,6 +55,7 @@ header {
 #filter-container {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 20px;
 }
 
@@ -67,6 +71,10 @@ header {
     transition: background-color 0.3s;
 }
 
+.filter-btn.active {
+    background-color: #005f73;
+}
+
 .filter-btn:hover {
     background-color: #007B9A;
 }
@@ -76,6 +84,7 @@ header {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
+    flex: 1;
 }
 
 .script-item {
@@ -113,7 +122,7 @@ footer {
     color: white;
     text-align: center;
     padding: 10px;
-    position: relative;
+    margin-top: auto;
 }
 
 footer a {
