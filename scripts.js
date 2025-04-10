@@ -119,20 +119,16 @@ function renderScripts() {
         scriptDiv.className = 'script-item';
 
         const title = document.createElement('h3');
-        title.textContent = `${categoryIcons[script.category] || ''} ${script.name}`;
+        const titleLink = document.createElement('a');
+        titleLink.href = `${rawURL}${script.file}`;
+        titleLink.target = '_blank';
+        titleLink.textContent = `${categoryIcons[script.category] || ''} ${script.name}`;
+        title.appendChild(titleLink);
         scriptDiv.appendChild(title);
 
         const description = document.createElement('p');
         description.textContent = script.description;
         scriptDiv.appendChild(description);
-
-        const viewBtn = document.createElement('a');
-        viewBtn.href = `${rawURL}${script.file}`;
-        viewBtn.textContent = '🔗 View Script';
-        viewBtn.target = '_blank';
-        viewBtn.style.display = 'inline-block';
-        viewBtn.style.marginTop = '10px';
-        scriptDiv.appendChild(viewBtn);
 
         container.appendChild(scriptDiv);
     });
