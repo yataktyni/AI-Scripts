@@ -38,13 +38,13 @@ async function fetchScripts() {
         const scripts = data.filter(item => item.name.endsWith('.bat') || item.name.endsWith('.ps1') || item.name.endsWith('.sh'));
         allScripts = await Promise.all(scripts.map(async script => {
             const name = script.name.replace(/\.(bat|ps1|sh)$/, '');
-            const categoryMatch = name.match(/^\[(.*?)\]/);
-            const category = categoryMatch ? categoryMatch[1] : 'MISC';
+            // Extract category based on the part before the first underscore (_)
+            const category = name.split('_')[0].toUpperCase(); 
             const description = await extractDescription(script);
             return {
                 name: name,
                 file: script.name,
-                category: category.toUpperCase(),
+                category: category, // Set the category to the part before the underscore
                 description: description
             };
         }));
