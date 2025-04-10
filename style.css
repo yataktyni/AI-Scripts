@@ -89,6 +89,7 @@ footer a:hover, footer a:focus {
 /* Script container and item styling */
 #scripts-container {
     margin-top: 20px;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -146,6 +147,11 @@ a:hover, a:focus {
     color: #e67e22; /* Hover color */
     transform: scale(1.1);
     animation: none; /* Disable pulsation on hover/focus */
+}
+
+.download-btn:hover {
+    text-decoration: none;
+    transform: scale(1.1);
 }
 
 /* Pulsation animation */
